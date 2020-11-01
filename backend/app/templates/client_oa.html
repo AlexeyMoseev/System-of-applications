@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Инфа о пользователе{% endblock %}
+{% block content %}
+  <h1>{{ data.data.first_name + ' ' + data.data.last_name }}</h1>
+  <h3>{{ data.email }}</h3>
+  <a href="{{url_for('client', uid=data.id)}}">Перейти к задачам</a>
+  {% if offers|length > 0 %}
+  <table>
+    <tr>
+      <td><a>Название услуги</a></td>
+      <td><a>Доступность</a></td>
+      <td><a>Действия</a></td>
+    </tr>
+    {% set colors = ["black", "green", "green", "red"]%}
+    {% for offer, oa in offers %}
+    {% set texts = ["Нет данных", "Уже заказана", "Доступна", oa.na_description]%}
+    {% set acc = offer_format(oa) %}
+    <tr>
+      <td><a>{{ offer.name }}</a></td>
+      <td><a style="color:{{ colors[acc] }}">{{ texts[acc] }}</a></td>
+      {% if oa == None or (not oa.ordered and not oa.available) %}
+      <td><a style="color:green" href="{{url_for('allow_offer')}}?offer_id={{offer.id}}&client_id={{data.id}}&redirect={{url_for('client_oa', uid=data.id)}}">
+        Дать разрешение
+      </a></td>
+      {% endif %}
+      {% if oa == None or (not oa.ordered and oa.available) %}
+      <td><a style="color:red" href="{{url_for('deny_offer')}}?offer_id={{offer.id}}&client_id={{data.id}}&redirect={{url_for('client_oa', uid=data.id)}}">
+        Запретить получение
+      </a></td>
+      {% endif %}
+    </tr>
+  	{% endfor %}
+  </table>
+  {% else %}
+  <a>Нет услуг</a>
+  {% endif %}
+{% endblock %}

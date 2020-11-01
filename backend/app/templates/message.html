@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Сообщение{% endblock %}
+{% block content %}
+  <h1>{{ 'Отклонить заявку' if type == 'reject' else 'Запросить действие' }}</h1>
+  <form action="{{ action_url }}" method="get">
+    <p>Сообщение клиенту</p>
+    <p><textarea name="message" cols="40" rows="5"></textarea></p>
+    <p><input type="submit" value="Отправить"></p>
+    {% for key, value in params %}
+    <input type="hidden" name="{{key}}" value={{value}}>
+    {% endfor %}
+  </form>
+{% endblock %}

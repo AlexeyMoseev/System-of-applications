@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Инфа о пользователе{% endblock %}
+{% block content %}
+  <h1>{{ data.data.first_name + ' ' + data.data.last_name }}</h1>
+  <h3>{{ data.email }}</h3>
+  <a href="{{url_for('client_oa', uid=data.id)}}">Перейти к доступности заявок</a>
+  {% if tasks|length > 0 %}
+  <table>
+    <tr>
+      <td><a>Задача</a></td>
+      <td><a>Статус</a></td>
+      <td><a>Начало</a></td>
+      <td><a>Действия</a></td>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+      <td><a>{{ task.task_name + ' - ' + task.name }}</a></td>
+      <td><a style="color:{{ 'black' if not task.action_required else '#d3d628' }}">{{ task.description if task.action_required else 'В процессе' }}</a></td>
+      <td><a>{{ moment(task.date_start).format('L в LT') }}</a></td>
+      <td><a style="color:green" href="{{url_for('resolve_task')}}?task_id={{task.id}}&redirect={{url_for('client', uid=data.id)}}">Выполнить</a></td>
+      <td><a style="color:#d3d628" href="{{url_for('req_task')}}?task_id={{task.id}}&redirect={{url_for('client', uid=data.id)}}">Запросить действие</a></td>
+      <td><a style="color:red" href="{{url_for('reject_task')}}?task_id={{task.id}}&redirect={{url_for('client', uid=data.id)}}">Отклонить</a></td>
+    </tr>
+  	{% endfor %}
+  </table>
+  {% else %}
+  <a>Нет неоконченных заявок</a>
+  {% endif %}
+{% endblock %}

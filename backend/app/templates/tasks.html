@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Задачи{% endblock %}
+{% block content %}
+  <h1>Текущие задачи</h1>
+  {% if tasks|length > 0 %}
+  <table>
+    <tr>
+      <td><a>Задача</a></td>
+      <td><a>Клиент</a></td>
+      <td><a>Начало</a></td>
+      <td><a>Действия</a></td>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+      <td><a>{{ task.task_name + ' - ' + task.name }}</a></td>
+      <td><a href="/admin/client/{{task.client.id}}">{{ task.client.first_name + ' ' + task.client.last_name }}</a></td>
+      <td><a>{{ moment(task.date_start).format('L в LT') }}</a></td>
+      <td><a style="color:green" href="{{url_for('resolve_task')}}?task_id={{task.id}}">Выполнить</a></td>
+      <td><a style="color:#d3d628" href="{{url_for('req_task')}}?task_id={{task.id}}">Запросить действие</a></td>
+      <td><a style="color:red" href="{{url_for('reject_task')}}?task_id={{task.id}}">Отклонить</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <a>Нет задач в процессе</a>
+  {% endif %}
+{% endblock %}

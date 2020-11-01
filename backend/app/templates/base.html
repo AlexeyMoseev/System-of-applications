@@ -1,0 +1,20 @@
+<!doctype html>
+<head>
+  {{ moment.include_jquery() }}
+  {{ moment.include_moment() }}
+  {{ moment.locale('ru') }}
+  <title>Админка - {% block title %}{% endblock %}</title>
+  <style>
+    li {display: inline;}
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('tasks') }}">Задачи</a>
+      <li><a href="{{ url_for('clients') }}">Клиенты</a>
+      <li><a href="{{ url_for('audit') }}">Аудит</a>
+    </ul>
+  </nav>
+  {% block content %}{% endblock %}
+</body>

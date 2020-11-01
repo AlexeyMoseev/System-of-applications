@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Аудит{% endblock %}
+{% block content %}
+  <h1>Аудит</h1>
+  {% if data|length > 0 %}
+  <table>
+    <tr>
+      <td><a>Дата</a></td>
+      <td><a>IP админа</a></td>
+      <td><a>Описание</a></td>
+    </tr>
+    {% for action in data %}
+    <tr>
+      <td><a>{{ moment(action.date).format('L в LT') }}</a></td>
+      <td><a>{{ action.ip }}</a></td>
+      <td><a>{{ action.description }}</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <a>Нет данных</a>
+  {% endif %}
+{% endblock %}
